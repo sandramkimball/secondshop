@@ -1,7 +1,7 @@
 //routes? are they a thing in graphql?
 
 server.use(
-    '/profule/:id',
+    '/profile/:id',
     bodyParser.json(),
     graphqlExpress(req => {
       // Some sort of auth function
