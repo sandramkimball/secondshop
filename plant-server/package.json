@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "server": "concurrently -k npm:server:*",
+    "server:users": "nodemon ./mocks/index.js",
+    "server:gateway": "wait-on tcp:4001 && nodemon ./index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
