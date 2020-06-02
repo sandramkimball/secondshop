@@ -65,18 +65,25 @@ const products = [
   }
 ]
 
-const explore = [
-    require("../assets/images/explore_1.png"),
-    require("../assets/images/explore_2.png"),
-    require("../assets/images/explore_3.png")
-]
+// const explore = [
+//     {image: require("../assets/images/explore_1.png")},
+//     {image: require("../assets/images/explore_2.png")},
+//     {image: require("../assets/images/explore_3.png")}
+// ]
 
-const profiles = [
+const explore = {
+    image: require("../assets/images/explore_1.png"),
+    image: require("../assets/images/explore_2.png"),
+    image: require("../assets/images/explore_3.png")
+},
+
+const users = [
     {
         id: 1,
         name: 'Pandy Blossom',
         location: 'USA',
-        email: 'panda@blossom.com',
+        email: 'panda@gmail.com',
+        password: 'panda6',
         budget:'900',
         cap: '950',
         avatar: require('../assets/images/flowers.png'),
@@ -88,6 +95,7 @@ const profiles = [
         name: 'Elmer Rudd',
         location: 'Canada',
         email: 'elmer@rudd.com',
+        password: 'elmer6',
         budget:'900',
         cap: '950',
         avatar: require('../assets/images/flowers.png'),
@@ -96,4 +104,4 @@ const profiles = [
     },
 ]
 
-export { categories, products, explore, profile };
+export { categories, products, explore, users };
