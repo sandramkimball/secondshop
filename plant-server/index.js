@@ -1,4 +1,5 @@
 const { ApolloServer } = require('apollo-server');
+const { applyMiddleware } = requre('graphql-middleware');
 const { ApolloGateway, RemoteGraphQLDataSource } = require('@apollo/gateway');
 const express = require('express');
 const jwt = require('express-jwt');
@@ -7,9 +8,9 @@ require('dotenv')
 
 const Port = process.env.PORT || 5000
 
-
 // Types
 const typeDefs = require('./schema');
+const { permissions } = require('./permissions');
 
 // Resolvers
 const Query = require('./resolvers/Query')
@@ -46,10 +47,11 @@ const gateway = new ApolloGateway({
 
 // Initiate Apollo Server
 const server = new ApolloServer({ 
-    typeDefs, 
-    resolvers, 
     gateway,
     subscriptions: false,
+    schema: applyMiddleware(
+        buildFederatedSchema([{ typeDefs, resolvers }])
+    ),
     context: ({ req }) => {
         const user = req.user || null;
         return { user };
