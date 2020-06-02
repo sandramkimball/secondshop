@@ -1,2 +1,2 @@
 # secondshop
-Another ecommerce practice site with php and mobile focus
+GraphQL database for React Native Plant App
