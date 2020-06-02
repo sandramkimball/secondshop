@@ -1,11 +1,9 @@
-const { ApolloServer, gql } = require('apollo-server');
+const { ApolloServer } = require('apollo-server');
 const { buildFederatedSchema } = require('@apollo/federation')
-const jwt = require('jsonwebtoken');
 
-const {  categories, products, explore, users  } = require('../data')
 const typeDefs = require('../schema')
 const resolvers = require('../resolvers/Query')
-const port = 4001
+
 
 const server = new ApolloServer({
     schema: buildFederatedSchema([{ typeDefs, resolvers }]),
@@ -16,6 +14,7 @@ const server = new ApolloServer({
     }
 });
 
+const port = 4001
 server.listen(port => {
     console.log(`User service ready on port ${port}.`)
 })

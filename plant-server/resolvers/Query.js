@@ -1,4 +1,4 @@
-import { categories, products, explore, users } from '../mocks/data';
+const { categories, products, explore, users } = require('../mocks/data')
 require('dotenv')
 // define resolver
 // this tells the server how to fetch when query is made

@@ -1,7 +1,7 @@
 const { gql } = require('apollo-server');
 
 // define schema
-export default typeDefs = gql`
+const typeDefs = gql`
     type Products {
         id: ID!
         name: String!
@@ -55,3 +55,6 @@ export default typeDefs = gql`
     }
 `;
 
+module.exports = {
+    typeDefs
+}

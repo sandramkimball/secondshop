@@ -4,42 +4,42 @@ const categories = [
         name: 'Plants',
         tags: ['products', 'inspirations'],
         count: 147,
-        image: require('../assets/images/plants.png')
+        image: require('../assets/icons/plants.png')
     },
     {
         id: 'seeds',
         name: 'Seeds',
         tags: ['products', 'shop'],
         count: 17,
-        image: require('../assets/images/seeds.png')
+        image: require('../assets/icons/seeds.png')
     },
     {
         id: 'flowers',
         name: 'Flowers',
         tags: ['products', 'inspirations'],
         count: 68,
-        image: require('../assets/images/flowers.png')
+        image: require('../assets/icons/flowers.png')
     },
     {
         id: 'sprayers',
         name: 'Sprayers',
         tags: ['products', 'shop'],
         count: 68,
-        image: require('../assets/images/sprayers.png')
+        image: require('../assets/icons/sprayers.png')
     },
     {
         id: 'pots',
         name: 'Pots',
         tags: ['products', 'shop'],
         count: 47,
-        image: require('../assets/images/pots.png')
+        image: require('../assets/icons/pots.png')
     },
     {
         id: 'fertilizers',
         name: 'Fertilizers',
         tags: ['products', 'shop'],
         count: 50,
-        image: require('../assets/images/fertilizers.png')
+        image: require('../assets/icons/fertilizers.png')
     }
 ]
 
@@ -65,17 +65,11 @@ const products = [
   }
 ]
 
-// const explore = [
-//     {image: require("../assets/images/explore_1.png")},
-//     {image: require("../assets/images/explore_2.png")},
-//     {image: require("../assets/images/explore_3.png")}
-// ]
-
-const explore = {
+const explore = [{
     image: require("../assets/images/explore_1.png"),
     image: require("../assets/images/explore_2.png"),
     image: require("../assets/images/explore_3.png")
-},
+}]
 
 const users = [
     {
@@ -86,7 +80,7 @@ const users = [
         password: 'panda6',
         budget:'900',
         cap: '950',
-        avatar: require('../assets/images/flowers.png'),
+        avatar: require('../assets/icons/flowers.png'),
         notifications: true,
         newsletter: false
     },
@@ -98,10 +92,10 @@ const users = [
         password: 'elmer6',
         budget:'900',
         cap: '950',
-        avatar: require('../assets/images/flowers.png'),
+        avatar: require('../assets/icons/flowers.png'),
         notifications: true,
         newsletter: true
     },
 ]
 
-export { categories, products, explore, users };
+module.exports = { categories, products, explore, users };

@@ -25,8 +25,7 @@ const app = express()
 app.use( expressJwt({
     secret: process.env.APP_SECRET,
     credentialsRequired: false
-    })
-)
+}));
 
 // Initiate Apollo Gateway
 const gateway = new ApolloGateway({
