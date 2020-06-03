@@ -21,7 +21,7 @@ app.use( ( req, _, next ) => {
         const data = verify(accessToken, process.env.APP_SECRET);
         req.userId = data.userId;
     } catch {
-        throw new Error('Error verifying token.')
+        // throw new Error('Error verifying token.')
     }
     next();
 });

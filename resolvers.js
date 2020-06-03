@@ -50,6 +50,8 @@ const resolvers = {
                 email, 
                 password: hashedPassword
             }).save();
+
+            return true
         },
 
         login: async (_, { email, password }, { res }) => {
