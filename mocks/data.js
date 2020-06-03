@@ -81,8 +81,8 @@ const Users = [
         budget:'900',
         cap: '950',
         avatar: '../assets/icons/flowers.png',
-        notifications: true,
-        newsletter: false
+        // notifications: true,
+        // newsletter: false
     },
     {
         id: 2,
@@ -93,8 +93,8 @@ const Users = [
         budget:'900',
         cap: '950',
         avatar: '../assets/icons/flowers.png',
-        notifications: true,
-        newsletter: true
+        // notifications: true,
+        // newsletter: true
     },
 ]
 

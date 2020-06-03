@@ -1,26 +1,19 @@
-const { Categories, Products, Explore, Users } = require('./mocks/data')
+//const { Categories, Products, Explore, Users } = require('./mocks/data')
 const bcrpyt = require('bcrypt');
-const { db } = require('./database');
+const db = require('./database');
 const { sign } = require('jsonwebtoken');
 require('dotenv');
 
 const resolvers = {
     // Types uses obj
-    User: {
-        users: async (obj, args, context, info) => db.users.findByPk(obj.email),
-    },
-    Product: {
-        products: async (obj, args, context, info) => db.users.findByPk(obj.id),
-    },
-    Products: {
-        products: async (obj, args, context, info) => db.products.findAll(),
-    },
-    Categories: {
-        categories: async (obj, args, context, info) => db.categories.findAll(),
-    },
-    Explore: {
-        explore: async (obj, args, context, info) => db.explore.findAll(),
-    },
+    // User: {
+    //     users: async (obj, args, context, info) => db.users.findByPk(obj.email),
+    // },
+    Users: async (obj, args, context, info) => db.users.findByPk(obj.email),
+    Products: async (obj, args, context, info) => db.products.findByPk(obj.id),
+    Products: async (obj, args, context, info) => db.products.findAll(),
+    Categories: async (obj, args, context, info) => db.categories.findAll(),
+    Explore: async (obj, args, context, info) => db.explore.findAll(),
 
     // Query uses args
     Query: {
@@ -38,17 +31,17 @@ const resolvers = {
     Mutation: {
         signup: async(_, { name, email, password }) => {
             const hashedPassword = await bcrpyt.hash(password, 10);
-            await Users.create({
+            const user = await db.users.create({
                 name,
                 email, 
                 password: hashedPassword
-            }).save();
+            })
 
-            return true
+            return user.save()
         },
 
         login: async (_, { email, password }, { res }) => {
-            const user = await Users.find({ where: { email } });
+            const user = await db.users.findByPk(email);
             if(!user){
                 throw new Error('Could not find user with that email.')
             }
