@@ -1,67 +1,42 @@
-const { ApolloServer } = require('apollo-server');
-const { applyMiddleware } = requre('graphql-middleware');
-const { ApolloGateway, RemoteGraphQLDataSource } = require('@apollo/gateway');
+const { ApolloServer } = require('apollo-server-express');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const jwt = require('express-jwt');
-const cors = require('cors')
-require('dotenv')
+const { verify } = require('jsonwebtoken');
+const cors = require('cors');
 
-const Port = process.env.PORT || 5000
+require('dotenv');
 
-// Types
-const typeDefs = require('./schema');
-const { permissions } = require('./permissions');
-
-// Resolvers
-const Query = require('./resolvers/Query')
-const Mutation = require('./resolvers/Mutation')
-const User = require('./resolvers/User')
-const Link = require('./resolvers/Link')
-
-const resolvers = { Query, Mutation, User, Link }
+// Resolvers & Types
+const { typeDefs } = require('./schema');
+const { resolvers } = require('./resolvers');
 
 // Initiate Express Application
-const app = express()
-app.use( expressJwt({
-    secret: process.env.APP_SECRET,
-    credentialsRequired: false
-}));
-
-// Initiate Apollo Gateway
-const gateway = new ApolloGateway({
-    serviceList: [{ name: URLSearchParams, url: 'http://localhost:3301'}],
-    // Pass data to service
-    buildService({ name, url }){
-        return new RemoteGraphQLDataSource({
-            url, 
-            willSendRequest({ request, context }){
-                request.http.headers.set(
-                    'user',
-                    context.user ? JSON.stringify(context.user) : null
-                )
-            }
-        })
+const app = express();
+app.use(cookieParser());
+app.use(cors());
+app.use( ( req, _, next ) => {
+    const accessToken = req.cookies['access-token'];
+    try {
+        const data = verify(accessToken, process.env.APP_SECRET);
+        req.userId = data.userId;
+    } catch {
+        throw new Error('Error verifying token.')
     }
-})
+    next();
+});
 
 // Initiate Apollo Server
 const server = new ApolloServer({ 
-    gateway,
-    subscriptions: false,
-    schema: applyMiddleware(
-        buildFederatedSchema([{ typeDefs, resolvers }])
-    ),
-    context: ({ req }) => {
-        const user = req.user || null;
-        return { user };
-    }
-})
+    typeDefs,
+    resolvers,
+    context: ({ req, res }) => ({ req, res }),
+});
 
-server.use(cors());
 // Integrate Express with Apollo
 server.applyMiddleware({ app }); 
 
 
-server.listen(Port => {
-    console.log(`Running on Port ${Port}.`)
+app.listen({port: 3300}, () => {
+    console.log(`Running at http://localhost:3300${server.graphqlPath}`)
 })
