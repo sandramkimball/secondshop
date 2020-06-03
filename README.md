@@ -16,22 +16,41 @@ Docer (create local MySQL db)
 
 
 ## Users
-| Field | Type             | Null | Key | Default | Extra          |
-+-------+------------------+------+-----+---------+----------------+
-| id    | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
-| name  | varchar(256)     | NO   |     | NULL    |                |
-| email | varchar(256)     | NO   |     | NULL    |                |
-| avatar | varchar(256)     |    |     | NULL    |                |
-| password | varchar(256)     | NO   |     | NULL    |                |
-+-------+------------------+------+-----+---------+----------------+
+| Field     | Type             | Null | Key | Default | Extra          |
++-----------+------------------+------+-----+---------+----------------+
+| id        | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| name      | varchar(256)     | NO   |     | NULL    |                |
+| email     | varchar(256)     | NO   |     | NULL    |                |
+| avatar    | varchar(256)     |      |     | NULL    |                |
+| password  | varchar(256)     | NO   |     | NULL    |                |
++-----------+------------------+------+-----+---------+----------------+
 
 
 ## Products
-| Field | Type             | Null | Key | Default | Extra          |
-+-------+------------------+------+-----+---------+----------------+
-| id    | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
-| name  | varchar(256)     | NO   |     | NULL    |                |
+| Field     | Type             | Null | Key | Default | Extra          |
++-----------+------------------+------+-----+---------+----------------+
+| id        | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| name      | varchar(256)     | NO   |     | NULL    |                |
 | description | varchar(256)     | NO   |     | NULL    |                |
-| tags | varchar(256)     |    |     | NULL    |                |
-| images | varchar(256)     |    |     | NULL    |                |
-+-------+------------------+------+-----+---------+----------------+
+| tags      | varchar(256)     |      |     | NULL    |                |
+| images    | varchar(256)     |      |     | NULL    |                |
++-----------+------------------+------+-----+---------+----------------+
+
+
+## Categories
+| Field     | Type             | Null | Key | Default | Extra          |
++-----------+------------------+------+-----+---------+----------------+
+| id        | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| name      | varchar(256)     | NO   |     | NULL    |                |
+| count     | varchar(256)     |      |     | NULL    |                |
+| tags      | varchar(256)     |      |     | NULL    |                |
+| images    | varchar(256)     |      |     | NULL    |                |
++-----------+------------------+------+-----+---------+----------------+
+
+
+## Explore
+| Field     | Type             | Null | Key | Default | Extra          |
++-----------+------------------+------+-----+---------+----------------+
+| id        | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| image     | varchar(256)     | NO   |     | NULL    |                |
++-----------+------------------+------+-----+---------+----------------+

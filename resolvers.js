@@ -1,45 +1,38 @@
 const { Categories, Products, Explore, Users } = require('./mocks/data')
 const bcrpyt = require('bcrypt');
+const { db } = require('./database');
 const { sign } = require('jsonwebtoken');
 require('dotenv');
 
 const resolvers = {
-    // Users: {
-    //     Users: ({ res, req }) => {
-    //         if (!req.user.id) {
-    //           return null;
-    //         }
-      
-    //         return Users.findOne(req.userId);
-    //         // return Users.findOne(user=> user.id === object.id )
-    //       }
-    // },
-    
-    // Products: {
-    //     Products: ({ res, req })=> {
-    //         return Products
-    //     }
-    // },
+    // Types uses obj
+    User: {
+        users: async (obj, args, context, info) => db.users.findByPk(obj.email),
+    },
+    Product: {
+        products: async (obj, args, context, info) => db.users.findByPk(obj.id),
+    },
+    Products: {
+        products: async (obj, args, context, info) => db.products.findAll(),
+    },
+    Categories: {
+        categories: async (obj, args, context, info) => db.categories.findAll(),
+    },
+    Explore: {
+        explore: async (obj, args, context, info) => db.explore.findAll(),
+    },
 
-    // Categories: {
-    //     Categories: ({ res, req })=> {
-    //         return Categories
-    //     }
-    // },
-    
-    // Explore: {
-    //     Explore: ({ res, req })=> {
-    //         return Explore
-    //     }
-    // },
-    
+    // Query uses args
     Query: {
-        products(){ return Products },
-        categories(){ return Categories },
-        explore(){ return Explore },
-        users({ id }){
-            return Users.find(user => user.id === id)
+        categories: async ()=> db.categories.findAll(),
+        explore: async ()=> db.explore.findAll(),
+        user: async (obj, args, context, info)=>  {
+            db.users.findBy( args.email )
         },
+        products: async () => db.products.findAll(),
+        product: async (obj, args, context, info)=>  {
+            db.products.findBy( args.id )
+        }
     },
 
     Mutation: {

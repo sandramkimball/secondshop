@@ -1,7 +1,7 @@
 const { gql } = require('apollo-server-express');
 
 // Define schema
-const typeDefs = gql`
+const plantSchema = gql`
     type Products {
         id: ID!
         name: String!
@@ -35,7 +35,7 @@ const typeDefs = gql`
         newsletter: Boolean
     },
 
-    type Query {
+    extend type Query {
         user: [Users]
         users(id: ID!): Users
         products: [Products]
@@ -51,6 +51,6 @@ const typeDefs = gql`
 `;
 
 module.exports = {
-    typeDefs
+    plantSchema
 }
 

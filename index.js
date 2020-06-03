@@ -8,7 +8,7 @@ const cors = require('cors');
 require('dotenv');
 
 // Resolvers & Types
-const { typeDefs } = require('./schema');
+const { plantSchema } = require('./schema');
 const { resolvers } = require('./resolvers');
 
 // Initiate Express Application
@@ -28,7 +28,7 @@ app.use( ( req, _, next ) => {
 
 // Initiate Apollo Server
 const server = new ApolloServer({ 
-    typeDefs,
+    plantSchema,
     resolvers,
     context: ({ req, res }) => ({ req, res }),
 });
