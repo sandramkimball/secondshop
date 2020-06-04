@@ -43,5 +43,3 @@ module.exports = function(sequelize, Dataypes){
         timestamps: false
     })
 };
-
- 

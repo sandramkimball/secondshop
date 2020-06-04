@@ -1,4 +1,4 @@
-const Categories = [
+const categories = [
     {
         id: 'plants',
         name: 'Plants',
@@ -43,7 +43,7 @@ const Categories = [
     }
 ]
 
-const Products = [    
+const products = [    
   {
     id: 1,
     name: "16 Best Plants That Thrive In Your Bedroom",
@@ -65,13 +65,13 @@ const Products = [
   }
 ]
 
-const Explore = [{
+const explore = [{
     image: "../assets/images/explore_1.png",
     image: "../assets/images/explore_2.png",
     image: "../assets/images/explore_3.png"
 }]
 
-const Users = [
+const users = [
     {
         id: 1,
         name: 'Pandy Blossom',
@@ -98,4 +98,4 @@ const Users = [
     },
 ]
 
-module.exports = { Categories, Products, Explore, Users };
+module.exports = { categories, products, explore, users };

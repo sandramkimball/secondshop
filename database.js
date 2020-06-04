@@ -1,10 +1,13 @@
 const Sequelize = require('sequelize');
+const mysql = require('mysql')
+require('dotenv')
 
 var db = {}
-
+// process.env.DB, process.env.USER, process.env.PASS, 
 const sequelize = new Sequelize({
+    // const sequelize = new Sequelize(':memory::mysql:', {
     host: 'localhost',
-    port: '3300',
+    port: '3306',
     dialect: 'mysql',
     define: {
         freezeTableName: true
@@ -39,6 +42,8 @@ Object.keys(db).forEach(key => {
         db[key].associate(db)
     }
 })
+
+
 
 db.sequelize = sequelize
 db.Sequelize = Sequelize

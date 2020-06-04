@@ -1,8 +1,7 @@
 const { gql } = require('apollo-server-express');
 
-// Define schema
 const typeDefs = gql`
-    type Products {
+    type Product {
         id: ID!
         name: String!
         tags: [String]
@@ -10,7 +9,7 @@ const typeDefs = gql`
         images: [String]
     },
 
-    type Categories {
+    type Category {
         id: ID!
         name: String!
         tags: [String]
@@ -22,7 +21,7 @@ const typeDefs = gql`
         image: String
     },
 
-    type Users {
+    type User {
         id: ID!
         name: String!
         location: String
@@ -34,19 +33,26 @@ const typeDefs = gql`
     },
 
     type Query {
-        user: [Users]
-        users(id: ID!): Users
-        products: [Products]
-        product(id: ID!): Products
-        categories: [Categories]
+        users: [User]
+        user(id: ID!): User
+        products: [Product]
+        product(id: ID!): Product
+        categories: [Category]
+        category: Category
         explore: [Explore]
     }
 
-    type Mutation {
-        signup(email: String!, password: String!, name: String!): Users
-        login(email: String!, password: String!): Users
+    # type Mutation {
+    #     signup(email: String!, password: String!, name: String!): User
+    #     login(email: String!, password: String!): User
+    # }
+    
+    type Schema {
+        query: Query
+        # mutation: Mutation
     }
 `;
+
 
 module.exports = {
     typeDefs

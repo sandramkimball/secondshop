@@ -4,11 +4,11 @@ const cookieParser = require('cookie-parser');
 const jwt = require('express-jwt');
 const { verify } = require('jsonwebtoken');
 const cors = require('cors');
-
 require('dotenv');
 
 // Resolvers & Types
-const { typeDefs } = require('./schema');
+//const { schema } = require('./schema.gql');
+const { typeDefs } = require('./schema.js');
 const { resolvers } = require('./resolvers');
 
 // Initiate Express Application
@@ -20,9 +20,8 @@ app.use( ( req, _, next ) => {
     try {
         const data = verify(accessToken, process.env.APP_SECRET);
         req.userId = data.userId;
-    } catch {
-        // throw new Error('Error verifying token.')
-    }
+    } 
+    catch { }
     next();
 });
 
@@ -30,12 +29,12 @@ app.use( ( req, _, next ) => {
 const server = new ApolloServer({ 
     typeDefs,
     resolvers,
-    models: [
-        require('./models/Users'),
-        require('./models/Products'),
-        require('./models/Categories'),
-        require('./models/Explore'),
-    ],
+    // models: [
+    //     require('./models/Users'),
+    //     require('./models/Products'),
+    //     require('./models/Categories'),
+    //     require('./models/Explore'),
+    // ],
     context: ({ req, res }) => ({ req, res }),
 });
 
