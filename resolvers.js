@@ -2,7 +2,7 @@ const { categories, products, explore, users } = require('./mocks/data');
 const { validateSignup, validateLogin } = require('./util/validator');
 const db = require('./database');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bycrypt');
+const bcrypt = require('bcrypt');
 const { _ } = require('lodash');
 require('dotenv');
 
@@ -69,14 +69,14 @@ const resolvers = {
 
             // Hash password and create Token
             const hashedPassword = await bcrypt.hash(password, 10);
-            const user = await users.create({
+            const newUser = await users.create({
                 name,
                 email, 
                 password: hashedPassword
             })
 
-            const res = await user.save();
-            const token = generateToken(user);
+            const res = await newUser.save();
+            const token = generateToken(newUser);
             return {
                 ...res._doc,
                 id: res._id,
@@ -98,8 +98,8 @@ const resolvers = {
             }
 
             // Check password
-            const valid = await bcrypt.compare(password, user.password);
-            if(!valid){
+            const isValid = await bcrypt.compare(password, user.password);
+            if(!isValid){
                 throw new Error('Incorrect password.')
             }
 
