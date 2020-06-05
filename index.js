@@ -8,7 +8,7 @@ const cors = require('cors');
 require('dotenv');
 
 // Resolvers & Types
-//const { schema } = require('./schema.gql');
+// const { schema } = require('./schema.gql');
 const { typeDefs } = require('./schema.js');
 const { resolvers } = require('./resolvers');
 
@@ -19,7 +19,7 @@ app.use(cors());
 app.use(
     '/graphql',
     graphqlHTTP({
-        typeDefs, 
+        schema: typeDefs, 
         graphiql: true
     })
 );
@@ -52,5 +52,5 @@ server.applyMiddleware({ app });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => 
-    console.log(`Port: ${PORT}. Running at http://localhost:3300${server.graphqlPath}`)
+    console.log(`Port: ${PORT}. Running at http://localhost:${PORT}${server.graphqlPath}`)
 );
