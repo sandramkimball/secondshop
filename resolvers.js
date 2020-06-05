@@ -5,6 +5,11 @@ const { sign } = require('jsonwebtoken');
 const { _ } = require('lodash');
 require('dotenv');
 
+// const getById = ({ userId }) => {
+//     const res = await this.get('users', {id: userId});
+//     return this.userReducer(res[0])
+// }
+
 const resolvers = {
     // Types reads obj
     // User: ({ userId }) => from("users").where({ id: userId }).first(),
@@ -18,15 +23,16 @@ const resolvers = {
         explore: async ()=> { return explore },
         categories: async ()=> { return categories },
         category: async (obj, args, context, info)=>  {
-            return category.find( name => name === args.name )
+            return category.find( name => name == args.name )
         },
         users: async ()=>  { return users },
         user: async (obj, args, context, info)=>  {
-            return users.findBy( args.email )
+            return await users.find( user => user.email == args.email )
+
         },
         products: async () =>  { return products },
         product: async (obj, args, context, info)=>  {
-            return products.find(id=> id === args.id)
+            return products.find( (product) => product.id == args.id)
         }
     },
 
