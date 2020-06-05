@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
         return next();
     }
 
-    const token = authHeader.splot(' ')[1];
+    const token = authHeader.split(' ')[1];
     if (!token || token === ''){
         req.isValid = false;
         return next();

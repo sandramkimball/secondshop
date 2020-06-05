@@ -1,11 +1,16 @@
-const { categories, products, explore, users } = require('./mocks/data');
 const { validateSignup, validateLogin } = require('./util/validator');
-const db = require('./database');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { _ } = require('lodash');
-require('dotenv');
+require('dotenv').config();
 
+// Models
+const Users = require('./models/Users');
+const Products = require('./models/Products');
+const Categories = require('./models/Categories');
+const Explore = require('./models/Explore');
+
+// Token function
 function generateToken(user){
     return jwt.sign(
         {
@@ -19,46 +24,39 @@ function generateToken(user){
 }
 
 const resolvers = {
-    // Types reads obj
-    // User: ({ userId }) => from("users").where({ id: userId }).first(),
-    // Product: async (obj, args, context, info) => products.findByPk(obj.id),
-    // Product: async (obj, args, context, info) => products.findByPk(),
-    // Category: async (obj, args, context, info) => categories.findByPk(),
-    // Explore: async (obj, args, context, info) => explore.findByPk(),
-
     // Queries reads args
     Query: {
-        explore: async ()=> { return explore },
-        categories: async ()=> { return categories },
+        explore: async ()=> { return Explore.find() },
+        categories: async ()=> { return Categories.find() },
         category: async (obj, args, context, info)=>  {
-            return category.find( name => name == args.name )
+            return Categories.find( name => name == args.name )
         },
-        users: async ()=>  { return users },
+        users: async ()=>  { return Users.find() },
         user: async (obj, args, context, info)=>  {
-            return await users.find( user => user.email == args.email )
+            return await Users.find( user => user.email == args.email )
 
         },
-        products: async () =>  { return products },
+        products: async () =>  { return Products.find() },
         product: async (obj, args, context, info)=>  {
-            return products.find( (product) => product.id == args.id)
+            return Products.find( product => product.id == args.id)
         }
     },
 
     Mutation: {
         signup: async(_, { name, email, password }) => {
             // Validate inputs
-            const { valid, errors } = validateSignup(
-                name, 
-                email, 
-                password
-            );
+            // const { valid, errors } = validateSignup(
+            //     name, 
+            //     email, 
+            //     password
+            // );
 
-            if(!valid){
-                throw new Error('Signup error', { errors });
-            }
+            // if(!valid){
+            //     throw new Error('Signup error', { errors });
+            // }
 
             // Check if email already exists
-            const user = await users.findOne({ email})
+            const user = await Users.findOne({ email})
             if(user){
                 throw new Error('There is already a user with that email.', {
                     errors: {
@@ -69,7 +67,7 @@ const resolvers = {
 
             // Hash password and create Token
             const hashedPassword = await bcrypt.hash(password, 10);
-            const newUser = await users.create({
+            const newUser = await Users.create({
                 name,
                 email, 
                 password: hashedPassword
@@ -92,7 +90,7 @@ const resolvers = {
             }
 
             // Find user
-            const user = await users.findOne({ email });
+            const user = await Users.findOne({ email });
             if(!user){
                 throw new Error('Could not find user with that email.')
             }

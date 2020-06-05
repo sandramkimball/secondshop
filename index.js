@@ -23,12 +23,6 @@ app.use(isAuth)
 const server = new ApolloServer({ 
     typeDefs,
     resolvers,
-    // models: [
-    //     require('./models/Users'),
-    //     require('./models/Products'),
-    //     require('./models/Categories'),
-    //     require('./models/Explore'),
-    // ],
     context: ({ req, res }) => ({ req, res }),
 });
 

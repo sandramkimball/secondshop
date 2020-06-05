@@ -6,7 +6,7 @@ module.exports = validateSignup = ( name, email, password ) => {
     if (email.trim() === ''){
         errors.name='Email is empty.'
     }
-    if (name.password() === ''){
+    if (password.trim() === ''){
         errors.name='Password is empty.'
     }
 
