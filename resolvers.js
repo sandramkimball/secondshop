@@ -84,10 +84,10 @@ const resolvers = {
 
         login: async (_, { email, password }) => {
             // Validate user
-            const { errors, valid } = validateLogin(email, password);
-            if (!valid){
-                throw new Error('Login error', { errors })
-            }
+            // const { errors, valid } = validateLogin(email, password);
+            // if (!valid){
+            //     throw new Error('Login error', { errors })
+            // }
 
             // Find user
             const user = await Users.findOne({ email });
