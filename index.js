@@ -1,7 +1,7 @@
 const { ApolloServer } = require('apollo-server-express');
 const express = require('express');
 const cookieParser = require('cookie-parser');
-const jwt = require('express-jwt');
+//const jwt = require('express-jwt');
 const { verify } = require('jsonwebtoken');
 const cors = require('cors');
 require('dotenv');
