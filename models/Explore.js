@@ -1,17 +1,10 @@
-module.exports = function(sequelize, Dataypes){
-    return sequelize.define('explore', {
-        id: {
-            type: Dataypes.INTEGER(10).UNSIGNED,
-            allowNull: false, 
-            primaryKey: true,
-            autoIncrement: true
-        },
+const { model, Schema } = require('mongoose');
+
+const exploreSchema = new Schema({
         images: {
-            type: Dataypes.STRING(256),
-            allowNull: true, 
+            type: String,
+            required: true, 
         },
-    }, {
-        tablename: 'explore',
-        timestamps: false
-    })
-};
+});
+
+module.exports = model('Explore', exploreSchema)

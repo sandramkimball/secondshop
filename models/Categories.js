@@ -1,29 +1,19 @@
-module.exports = function(sequelize, Dataypes){
-    return sequelize.define('categories', {
-        id: {
-            type: Dataypes.INTEGER(10).UNSIGNED,
-            allowNull: false, 
-            primaryKey: true,
-            autoIncrement: true
-        },
+const { model, Schema } = require('mongoose');
+
+const categoriesSchema = new Schema({
         name: {
-            type: Dataypes.STRING(256),
-            allowNull: false, 
+            type: String,
+            required: true, 
         },
         tags: {
-            type: Dataypes.STRING(256),
-            allowNull: true, 
+            type: String,
         },
         count: {
-            type: Dataypes.INTEGER(10),
-            allowNull: false, 
+            type: String,
         },
         images: {
-            type: Dataypes.STRING(256),
-            allowNull: true, 
-        },
-    }, {
-        tablename: 'categories',
-        timestamps: false
-    })
-};
+            type: String,
+        }
+});
+
+module.exports = model('Categories', categoriesSchema)

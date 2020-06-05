@@ -1,74 +1,116 @@
-const { categories, products, explore, users } = require('./mocks/data');
-const db = require('./database');
-const { sign } = require('jsonwebtoken');
+const { validateSignup, validateLogin } = require('./util/validator');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const { _ } = require('lodash');
-require('dotenv');
+require('dotenv').config();
 
-// const getById = ({ userId }) => {
-//     const res = await this.get('users', {id: userId});
-//     return this.userReducer(res[0])
-// }
+// Models
+const Users = require('./models/Users');
+const Products = require('./models/Products');
+const Categories = require('./models/Categories');
+const Explore = require('./models/Explore');
+
+// Token function
+function generateToken(user){
+    return jwt.sign(
+        {
+            id: user.id,
+            email: user.email,
+            name: user.name
+        },
+        process.env.APP_SECRET,
+        {expiresIn: '3d'}
+    );
+}
 
 const resolvers = {
-    // Types reads obj
-    // User: ({ userId }) => from("users").where({ id: userId }).first(),
-    // Product: async (obj, args, context, info) => products.findByPk(obj.id),
-    // Product: async (obj, args, context, info) => products.findByPk(),
-    // Category: async (obj, args, context, info) => categories.findByPk(),
-    // Explore: async (obj, args, context, info) => explore.findByPk(),
-
     // Queries reads args
     Query: {
-        explore: async ()=> { return explore },
-        categories: async ()=> { return categories },
+        explore: async ()=> { return Explore.find() },
+        categories: async ()=> { return Categories.find() },
         category: async (obj, args, context, info)=>  {
-            return category.find( name => name == args.name )
+            return Categories.find( name => name == args.name )
         },
-        users: async ()=>  { return users },
+        users: async ()=>  { return Users.find() },
         user: async (obj, args, context, info)=>  {
-            return await users.find( user => user.email == args.email )
+            return await Users.find( user => user.email == args.email )
 
         },
-        products: async () =>  { return products },
+        products: async () =>  { return Products.find() },
         product: async (obj, args, context, info)=>  {
-            return products.find( (product) => product.id == args.id)
+            return Products.find( product => product.id == args.id)
         }
     },
 
-    // Mutation: {
-    //     signup: async(_, { name, email, password }) => {
-    //         const hashedPassword = await bcrpyt.hash(password, 10);
-    //         const user = await users.create({
-    //             name,
-    //             email, 
-    //             password: hashedPassword
-    //         })
+    Mutation: {
+        signup: async(_, { name, email, password }) => {
+            // Validate inputs
+            // const { valid, errors } = validateSignup(
+            //     name, 
+            //     email, 
+            //     password
+            // );
 
-    //         return user.save()
-    //     },
+            // if(!valid){
+            //     throw new Error('Signup error', { errors });
+            // }
 
-    //     login: async (_, { email, password }, { res }) => {
-    //         const user = await users.findByPk(email);
-    //         if(!user){
-    //             throw new Error('Could not find user with that email.')
-    //         }
+            // Check if email already exists
+            const user = await Users.findOne({ email})
+            if(user){
+                throw new Error('There is already a user with that email.', {
+                    errors: {
+                        email: 'Email already in use.'
+                    }
+                })
+            };
 
-    //         const valid = await bcrpyt.compare(password, user.password);
-    //         if(!valid){
-    //             throw new Error('Incorrect password.')
-    //         }
+            // Hash password and create Token
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const newUser = await Users.create({
+                name,
+                email, 
+                password: hashedPassword
+            })
 
-    //         const accessToken = sign(
-    //             { userId: user.id },
-    //             process.env.APP_SECRET,
-    //             { expiresIn: '5d' }
-    //         );
+            const res = await newUser.save();
+            const token = generateToken(newUser);
+            return {
+                ...res._doc,
+                id: res._id,
+                token
+            }
+        },
 
-    //         res.cookies("access-token", accessToken, {expires: 60 * 60 * 24 * 7})
+        login: async (_, { email, password }) => {
+            // Validate user
+            // const { errors, valid } = validateLogin(email, password);
+            // if (!valid){
+            //     throw new Error('Login error', { errors })
+            // }
 
-    //         return user;
-    //     }
-    // }
+            // Find user
+            const user = await Users.findOne({ email });
+            if(!user){
+                throw new Error('Could not find user with that email.')
+            }
+
+            // Check password
+            const isValid = await bcrypt.compare(password, user.password);
+            if(!isValid){
+                throw new Error('Incorrect password.')
+            }
+
+            // Create token
+            const token = generateToken(user);
+
+            return {
+                ...user._doc,
+                id: user._id,
+                token
+            };
+        }
+    }
 }
 
   
