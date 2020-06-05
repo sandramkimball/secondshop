@@ -1,4 +1,3 @@
-const bcrpyt = require('bcrypt');
 const { categories, products, explore, users } = require('./mocks/data');
 const db = require('./database');
 const { sign } = require('jsonwebtoken');
