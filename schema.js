@@ -42,14 +42,14 @@ const typeDefs = gql`
         explore: [Explore]
     }
 
-    # type Mutation {
-    #     signup(email: String!, password: String!, name: String!): User
-    #     login(email: String!, password: String!): User
-    # }
+    type Mutation {
+        signup(email: String!, password: String!, name: String!): User
+        login(email: String!, password: String!): User
+    }
     
     type Schema {
         query: Query
-        # mutation: Mutation
+        mutation: Mutation
     }
 `;
 
