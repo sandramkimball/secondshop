@@ -16,13 +16,13 @@ const { resolvers } = require('./resolvers');
 const app = express();
 app.use(cookieParser());
 app.use(cors());
-app.use(
-    '/graphql',
-    graphqlHTTP({
-        schema: typeDefs, 
-        graphiql: true
-    })
-);
+// app.use(
+//     '/graphql',
+//     graphqlHTTP({
+//         schema: typeDefs, 
+//         graphiql: true
+//     })
+// );
 // app.use( ( req, _, next ) => {
 //     const accessToken = req.cookies['access-token'];
 //     try {
@@ -37,7 +37,7 @@ app.use(
 const server = new ApolloServer({ 
     typeDefs,
     resolvers,
-    graphiql: true,
+    //graphiql: true,
     // models: [
     //     require('./models/Users'),
     //     require('./models/Products'),
