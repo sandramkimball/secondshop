@@ -1,13 +1,22 @@
 const { categories, products, explore, users } = require('./mocks/data');
+const { validateSignup, validateLogin } = require('./util/validator');
 const db = require('./database');
-const { sign } = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bycrypt');
 const { _ } = require('lodash');
 require('dotenv');
 
-// const getById = ({ userId }) => {
-//     const res = await this.get('users', {id: userId});
-//     return this.userReducer(res[0])
-// }
+function generateToken(user){
+    return jwt.sign(
+        {
+            id: user.id,
+            email: user.email,
+            name: user.name
+        },
+        process.env.APP_SECRET,
+        {expiresIn: '3d'}
+    );
+}
 
 const resolvers = {
     // Types reads obj
@@ -35,40 +44,75 @@ const resolvers = {
         }
     },
 
-    // Mutation: {
-    //     signup: async(_, { name, email, password }) => {
-    //         const hashedPassword = await bcrpyt.hash(password, 10);
-    //         const user = await users.create({
-    //             name,
-    //             email, 
-    //             password: hashedPassword
-    //         })
+    Mutation: {
+        signup: async(_, { name, email, password }) => {
+            // Validate inputs
+            const { valid, errors } = validateSignup(
+                name, 
+                email, 
+                password
+            );
 
-    //         return user.save()
-    //     },
+            if(!valid){
+                throw new Error('Signup error', { errors });
+            }
 
-    //     login: async (_, { email, password }, { res }) => {
-    //         const user = await users.findByPk(email);
-    //         if(!user){
-    //             throw new Error('Could not find user with that email.')
-    //         }
+            // Check if email already exists
+            const user = await users.findOne({ email})
+            if(user){
+                throw new Error('There is already a user with that email.', {
+                    errors: {
+                        email: 'Email already in use.'
+                    }
+                })
+            };
 
-    //         const valid = await bcrpyt.compare(password, user.password);
-    //         if(!valid){
-    //             throw new Error('Incorrect password.')
-    //         }
+            // Hash password and create Token
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const user = await users.create({
+                name,
+                email, 
+                password: hashedPassword
+            })
 
-    //         const accessToken = sign(
-    //             { userId: user.id },
-    //             process.env.APP_SECRET,
-    //             { expiresIn: '5d' }
-    //         );
+            const res = await user.save();
+            const token = generateToken(user);
+            return {
+                ...res._doc,
+                id: res._id,
+                token
+            }
+        },
 
-    //         res.cookies("access-token", accessToken, {expires: 60 * 60 * 24 * 7})
+        login: async (_, { email, password }) => {
+            // Validate user
+            const { errors, valid } = validateLogin(email, password);
+            if (!valid){
+                throw new Error('Login error', { errors })
+            }
 
-    //         return user;
-    //     }
-    // }
+            // Find user
+            const user = await users.findOne({ email });
+            if(!user){
+                throw new Error('Could not find user with that email.')
+            }
+
+            // Check password
+            const valid = await bcrypt.compare(password, user.password);
+            if(!valid){
+                throw new Error('Incorrect password.')
+            }
+
+            // Create token
+            const token = generateToken(user);
+
+            return {
+                ...user._doc,
+                id: user._id,
+                token
+            };
+        }
+    }
 }
 
   
