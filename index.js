@@ -1,6 +1,7 @@
 const { ApolloServer } = require('apollo-server-express');
 const express = require('express');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 // DB Config
