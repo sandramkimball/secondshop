@@ -1,4 +1,4 @@
-module.exports = validateSignup = ( name, email, password ) => {
+function validateSignup = ( name, email, password ) => {
     const errors = {};
     if (name.trim() === ''){
         errors.name='Name is empty.'
@@ -16,7 +16,7 @@ module.exports = validateSignup = ( name, email, password ) => {
     }
 }
 
-module.exports = validateLogin = ( email, password ) => {
+function validateLogin = ( email, password ) => {
     const errors = {};
     if (email.trim() === ''){
         errors.name='Email is empty.'
@@ -30,3 +30,6 @@ module.exports = validateLogin = ( email, password ) => {
         valid: Object.keys(errors).length < 1
     }
 }
+
+
+module.exports = { validateSignup, validateLogin }
