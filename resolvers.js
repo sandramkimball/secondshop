@@ -1,6 +1,6 @@
 const { validateSignup, validateLogin } = require('./util/validator');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { _ } = require('lodash');
 require('dotenv').config();
 
