@@ -1,4 +1,4 @@
-function validateSignup = ( name, email, password ) => {
+function validateSignup ( name, email, password ){
     const errors = {};
     if (name.trim() === ''){
         errors.name='Name is empty.'
@@ -16,7 +16,7 @@ function validateSignup = ( name, email, password ) => {
     }
 }
 
-function validateLogin = ( email, password ) => {
+function validateLogin ( email, password ) {
     const errors = {};
     if (email.trim() === ''){
         errors.name='Email is empty.'
